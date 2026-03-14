@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:18
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql
     environment:
       POSTGRES_PASSWORD: password
       TZ: Asia/Tokyo
