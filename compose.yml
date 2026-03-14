@@ -20,6 +20,7 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_HOSTNAME: db
       DATABASE_NAME: rails_v8_1_2_react19_vite_development
+      DATABASE_URL: postgres://postgres:password@db:5432/db
     volumes:
       - .:/app:cached
       - tmp-data:/app/tmp
