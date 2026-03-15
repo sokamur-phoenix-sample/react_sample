@@ -15,7 +15,7 @@ executors:
         environment:
           RAILS_ENV: "test"
           DATABASE_HOSTNAME: "127.0.0.1"
-          DATABASE_URL: postgres://postgres:password@db:5432/db
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/db
           TZ: /usr/share/zoneinfo/Asia/Tokyo
       - image: cimg/postgres:18.1
         environment:
