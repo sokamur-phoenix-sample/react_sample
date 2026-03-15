@@ -1,0 +1,90 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@2.6.0
+  browser-tools: circleci/browser-tools@2.4.0
+
+executors:
+  default:
+    docker:
+      - image: cimg/ruby:4.0.1-node
+        environment:
+          TZ: "Asia/Tokyo"
+  extend:
+    docker:
+      - image: cimg/ruby:4.0.1-browsers
+        environment:
+          RAILS_ENV: "test"
+          DATABASE_HOSTNAME: "127.0.0.1"
+          DATABASE_URL: postgres://postgres:password@db:5432/db
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+      - image: cimg/postgres:18.1
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: rails_v8_1_2_react19_vite_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+commands:
+  restore_gems:
+    steps:
+      - restore_cache:
+          keys:
+            - bundle-{{ checksum "Gemfile" }}
+            - bundle-
+  install_gems:
+    steps:
+      - run:
+          name: Install Ruby Dependencies
+          command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle config set clean 'true'
+            bundle install
+  save_gems:
+    steps:
+      - save_cache:
+          key: bundle-{{ checksum "Gemfile" }}
+          paths: vendor/bundle
+jobs:
+  brakeman:
+    executor: default
+    steps:
+      - checkout
+      - restore_gems
+      - install_gems
+      - save_gems
+      - run:
+          name: Brakeman
+          command: bundle exec brakeman -i config/brakeman.ignore -A -w1
+  rubocop:
+    executor: default
+    steps:
+      - checkout
+      - restore_gems
+      - install_gems
+      - save_gems
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+  rspec:
+    executor: extend
+    parallelism: 1
+    steps:
+      - checkout
+      - restore_gems
+      - install_gems
+      - save_gems
+      - run:
+          name: Waits for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 10s
+      - run:
+          name: Create DB
+          command: RAILS_ENV=test bin/rails db:create db:schema:load
+      - run:
+          name: RSpec
+          command: bundle exec rspec
+workflows:
+  version: 2.1
+  dafault-workflow:
+    jobs:
+      - rubocop
+      - rspec
+      - brakeman
