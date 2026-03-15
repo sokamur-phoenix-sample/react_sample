@@ -81,6 +81,19 @@ jobs:
       - run:
           name: RSpec
           command: bundle exec rspec
+  bundle_update:
+    docker:
+      - image: cimg/ruby:4.0.1-browsers
+        environment:
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+    steps:
+      - checkout
+      - run:
+          name : bundle update
+          command: >-
+            bash -c "gem update bundler &&
+            gem install circleci-bundle-update-pr &&
+            circleci-bundle-update-pr ${BUNDLE_UPDATE_GITHUB_USERNAME} ${BUNDLE_UPDATE_GITHUB_EMAIL}"
 workflows:
   version: 2.1
   dafault-workflow:
@@ -88,3 +101,13 @@ workflows:
       - rubocop
       - rspec
       - brakeman
+  circleci_bundle_update_pr:
+    triggers:
+      - schedule:
+          cron: "50 3 * * 0"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - bundle_update
