@@ -1,3 +1,7 @@
-const Hello = ({name}) => <h1>Hello,{name}!</h1>
+interface HelloProps {
+  name: string;
+}
 
-export default Hello
+const Hello = ({ name }: HelloProps) => <h1>Hello, {name}!</h1>;
+
+export default Hello;
