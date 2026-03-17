@@ -23,6 +23,7 @@ services:
       DATABASE_URL: postgres://postgres:password@db:5432/db
     volumes:
       - .:/app:cached
+      - /node_modules
       - tmp-data:/app/tmp
       - log-data:/app/log
       - ./coverage:/app/coverage
@@ -34,6 +35,7 @@ services:
       bash -c "rm -f tmp/pids/server.pid &&
       bundle config set --local path "vendor/bundle" &&
       bundle config set clean "true" &&
+      npm install &&
       bundle install &&
       bin/rails db:create db:migrate &&
       bin/rails s -p 3000 -b '0.0.0.0'"
