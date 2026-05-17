@@ -17,7 +17,7 @@ frontend@ /rails_v8.1.2_react19_vite
 **【Docker開発環境】**  
 ```
 $ git clone https://github.com/sokamur-phoenix-sample/react_sample.git
-$ cd rails_v8.1.2_react19_vite
+$ cd react_sample
 $ docker compose up -d --build
 $ docker compose exec app bin/rails db:migrate
 * URL: http://localhost:3000
