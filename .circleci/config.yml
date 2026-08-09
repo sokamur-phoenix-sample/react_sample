@@ -35,6 +35,8 @@ commands:
       - run:
           name: Install Ruby Dependencies
           command: |
+            sudo apt update
+            sudo apt install -y libvips-dev
             bundle config set --local path 'vendor/bundle'
             bundle config set clean 'true'
             bundle install
