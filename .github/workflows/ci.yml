@@ -16,10 +16,23 @@ jobs:
       - name: Install libvips
         run: |
           sudo apt update
-          sudo apt install -y libvips-dev libvips
-          VIPS_SO=$(find /usr/lib -name "libvips.so.*" | head -n 1)
-          VIPS_DIR=$(dirname "$VIPS_SO")
-          sudo ln -sf "$VIPS_SO" "$VIPS_DIR/vips.so.42"
+          sudo apt install -y libvips libvips-dev
+          
+          # システムにインストールされた本物の libvips.so パスを探す
+          REAL_VIPS_SO=$(find /usr/lib -name "libvips.so.*" ! -type l | head -n 1)
+          if [ -z "$REAL_VIPS_SO" ]; then
+            REAL_VIPS_SO=$(find /usr/lib -name "libvips.so" | head -n 1)
+          fi
+          
+          VIPS_DIR=$(dirname "$REAL_VIPS_SO")
+          
+          # Ruby（ruby-vips）が探しにいく可能性がある名前ですべてリンクを貼る
+          sudo ln -sf "$REAL_VIPS_SO" "$VIPS_DIR/vips.so.42"
+          sudo ln -sf "$REAL_VIPS_SO" "$VIPS_DIR/libvips.so.42"
+          sudo ln -sf "$REAL_VIPS_SO" "/usr/local/lib/vips.so.42"
+          sudo ln -sf "$REAL_VIPS_SO" "/usr/local/lib/libvips.so.42"
+          
+          # システム全体にライブラリのパスを強制的に再認識させる
           sudo ldconfig
 
       - name: Set up Ruby
