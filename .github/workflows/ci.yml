@@ -35,6 +35,10 @@ jobs:
           # システム全体にライブラリのパスを強制的に再認識させる
           sudo ldconfig
 
+      - name: Force ffi to compile from source
+        run: |
+          bundle config set --local force_ruby_platform true
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
