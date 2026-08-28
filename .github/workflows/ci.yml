@@ -16,7 +16,11 @@ jobs:
       - name: Install libvips
         run: |
           sudo apt update
-          sudo apt install -y libvips42
+          sudo apt install -y libvips-dev libvips
+          VIPS_SO=$(find /usr/lib -name "libvips.so.*" | head -n 1)
+          VIPS_DIR=$(dirname "$VIPS_SO")
+          sudo ln -sf "$VIPS_SO" "$VIPS_DIR/vips.so.42"
+          sudo ldconfig
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
