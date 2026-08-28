@@ -43,9 +43,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    with:
-          ruby-version: 4.0.1
-          bundler-cache: true
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
@@ -70,4 +67,3 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
-
