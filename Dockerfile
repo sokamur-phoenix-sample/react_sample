@@ -1,4 +1,4 @@
-FROM ruby:4.0.1
+FROM ruby:4.0.6
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
 #   && chmod 755 ~/chromedriver \
 #   && mv ~/chromedriver /usr/bin/chromedriver \
 #   && apt update -qq && apt install -y build-essential libpq-dev postgresql-client google-chrome-stable \
-  && apt update -qq && apt install -y build-essential libpq-dev postgresql-client \
+  && apt update -qq && apt install -y build-essential libpq-dev postgresql-client libvips4t64 \
   && curl -sL https://deb.nodesource.com/setup_24.x | bash - \
   && apt install -y nodejs vim \
   && apt clean \

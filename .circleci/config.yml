@@ -6,12 +6,12 @@ orbs:
 executors:
   default:
     docker:
-      - image: cimg/ruby:4.0.1-node
+      - image: cimg/ruby:4.0.6-node
         environment:
           TZ: "Asia/Tokyo"
   extend:
     docker:
-      - image: cimg/ruby:4.0.1-browsers
+      - image: cimg/ruby:4.0.6-browsers
         environment:
           RAILS_ENV: "test"
           DATABASE_HOSTNAME: "127.0.0.1"
@@ -83,7 +83,7 @@ jobs:
           command: bundle exec rspec
   bundle_update:
     docker:
-      - image: cimg/ruby:4.0.1-browsers
+      - image: cimg/ruby:4.0.6-browsers
         environment:
           TZ: /usr/share/zoneinfo/Asia/Tokyo
     steps:
