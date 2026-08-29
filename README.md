@@ -1,13 +1,13 @@
 # README
 
-* **Server Side: Rails v8.1.2**
+* **Server Side: Rails v8.1.3.1**
 * **Front End: React v19.2.4**
 * **Front Build tools: vite_rails v3.11.0**
 * **Database: PostgreSQL v18**
 
 ```
 $ npm list react
-frontend@ /rails_v8.1.2_react19_vite
+frontend@ /react_sample
 ├─┬ react-dom@19.2.4
 │ └── react@19.2.4 deduped
 └── react@19.2.4
